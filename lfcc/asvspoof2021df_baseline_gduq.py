@@ -47,11 +47,4 @@ if not exists(dict_file):
         pickle.dump({'bona': gmm_bona._get_parameters(),
                      'spoof': gmm_spoof._get_parameters()}, tf)
 
-# 若你仍要兼容此前“init_partial → final”的组合方式，可保留下列合并逻辑（可选）
-# gmm_dict = {}
-# with open(dict_file + '_bonafide_init_partial.pkl', "rb") as tf:
-#     gmm_dict['bona'] = pickle.load(tf)
-# with open(dict_file + '_spoof_init_partial.pkl', "rb") as tf:
-#     gmm_dict['spoof'] = pickle.load(tf)
-# with open(dict_file_final, "wb") as f:
-#     pickle.dump(gmm_dict, f)
+
