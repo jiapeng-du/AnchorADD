@@ -204,3 +204,33 @@ Evaluation & Uncertainty Metrics
 ```
 
 This workflow is shared across all supported datasets and enables reproducible MoE-based anti-spoofing experiments.
+
+---
+
+## 5. Pretrained Model Download (Required)
+
+The pretrained model used in the MoE experiments (**Wav2Vec2-XLS-R-300M**) is **too large to be included in this repository**.
+
+Therefore, users must **manually download** the pretrained model files before running training or inference.
+
+### Download Instructions
+
+Please download all files from the following Hugging Face repository:
+
+```
+https://huggingface.co/facebook/wav2vec2-xls-r-300m/tree/main
+```
+
+### Required Directory Structure
+
+After downloading, place the files under the following directory:
+
+```text
+moe/data/pretrained_model/facebook/wav2vec2-xls-r-300m/
+```
+
+The final directory should contain the same files as provided in the Hugging Face link (e.g., model weights, configuration files, tokenizer files, etc.).
+
+⚠️ **Important**: Do not rename the folder. The code assumes the pretrained model is located exactly at the path shown above.
+
+Once this directory is correctly set up, the MoE training and inference scripts will automatically load the pretrained model without further configuration.
