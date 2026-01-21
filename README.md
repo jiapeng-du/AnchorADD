@@ -95,6 +95,33 @@ rawnet/README.md
 
 ---
 
+## Dataset Preparation and Path Configuration
+
+Before running **any** experiment, you must ensure that the dataset **protocol files** and **audio file paths** are correctly configured.
+
+* All datasets are expected to be located under:
+
+```text
+AnchorADD/data/
+```
+
+* For each baseline, the corresponding data-loading scripts contain hard-coded or configurable paths to:
+
+  * Protocol files (train / dev / eval splits)
+  * Audio file root directories
+
+These paths **must be updated to match your local filesystem** before running training or inference.
+
+⚠️ **Important Notes**:
+
+* Some datasets may be **too large to be included** in the repository
+* Such datasets need to be **downloaded manually** and **properly organized/split** under `AnchorADD/data/`
+* Experiments will fail if protocol paths or audio paths are incorrect
+
+Please refer to the baseline-specific README files for detailed instructions on where and how to modify dataset paths.
+
+---
+
 ## Environment Setup
 
 All experiments must be run under an environment that is **consistent with the provided dependencies**.
@@ -149,5 +176,6 @@ This repository is intended for **research and academic use**. Please refer to t
 
 ---
 
-If you use this repository in your research, please cite the corresponding work or baseline as described in each submod
+If you use this repository in your research, please cite the corresponding work or baseline as described in each submodule.
+
 
