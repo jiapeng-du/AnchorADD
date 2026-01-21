@@ -46,8 +46,9 @@ if not exists(dict_file):
     with open(dict_file, "wb") as tf:
         pickle.dump(gmm_dict, tf)
 
-# —— 最小改动：确保 final 文件与 dict_file 内容一致（不再依赖 gmm_bona/spoof 变量）——
+# —— 确保 final 文件与 dict_file 内容一致（不再依赖 gmm_bona/spoof 变量）——
 with open(dict_file, "rb") as src:
     gmm_dict = pickle.load(src)
 with open(dict_file_final, "wb") as dst:
+
     pickle.dump(gmm_dict, dst)
