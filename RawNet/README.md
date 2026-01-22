@@ -1,64 +1,101 @@
-# RawNet2 ASVspoof 2021 baseline
+# RawNet Experiment Usage
 
-By Hemlata Tak, EURECOM, 2021
+This directory contains the RawNet-based baseline used in this repository.
+Different entry scripts are used depending on the dataset, following the official ASVspoof RawNet2 baseline design.
 
-------
+The implementation and usage are adapted from the official ASVspoof 2021 RawNet2 baseline:
 
-The code in this repository serves as one of the baselines of the ASVspoof 2021 challenge, using an end-to-end method that uses a model based on the RawNet2 topology as described [here](https://arxiv.org/abs/2011.01108).
+* [https://github.com/asvspoof-challenge/2021/tree/main/LA/Baseline-RawNet2](https://github.com/asvspoof-challenge/2021/tree/main/LA/Baseline-RawNet2)
 
-## Installation
-First, clone the repository locally, create and activate a conda environment, and install the requirements :
-```
-$ git clone https://github.com/asvspoof-challenge/2021.git
-$ cd 2021/LA/Baseline-RawNet2/
-$ conda create --name rawnet_anti_spoofing python=3.6.10
-$ conda activate rawnet_anti_spoofing
-$ conda install pytorch=1.4.0 -c pytorch
-$ pip install -r requirements.txt
-```
+---
 
-## Experiments
+## Entry Scripts
 
-### Dataset
-Our model for the deepfake (DF) track is trained on the logical access (LA) train  partition of the ASVspoof 2019 dataset, which can can be downloaded from [here](https://datashare.is.ed.ac.uk/handle/10283/3336).
+Two different entry scripts are used:
 
-### Training
-To train the model run:
-```
-python main.py --track=DF --loss=CCE   --lr=0.0001 --batch_size=32
-```
+* `main.py`
+  Used **only for ASVspoof 2019 LA** experiments.
 
-### Testing
+* `main2.py`
+  Used for **all other datasets**, including:
 
-To test your own model on the ASVspoof 2021 DF evaluation set:
+  * ASVspoof 2021 LA
+  * ASVspoof 2021 DF
+  * In-The-Wild (ITW)
 
-```
-python main.py --track=DF --loss=CCE --is_eval --eval --model_path='/path/to/your/your_best_model.pth' --eval_output='eval_CM_scores.txt'
-```
+---
 
-We also provide a pre-trained model which follows a Mel-scale distribution of the sinc filters at the input layer, which can be downloaded from [here](https://www.asvspoof.org/asvspoof2021/pre_trained_DF_RawNet2.zip). To use it you can run: 
-```
-python main.py --track=DF --loss=CCE --is_eval --eval --model_path='/path/to/your/pre_trained_DF_model.pth' --eval_output='pre_trained_eval_CM_scores.txt'
+## Training
+
+### ASVspoof 2019 LA
+
+To train RawNet on ASVspoof 2019 LA, use `main.py`:
+
+```bash
+python main.py [other arguments]
 ```
 
-If you would like to compute scores on the development set of ASVspoof 2019 simply run:
+No evaluation flags are required during training.
 
-```
-python main.py --track=DF --loss=CCE --eval --model_path='/path/to/your/best_model.pth' --eval_output='dev_CM_scores.txt'
+---
+
+### ASVspoof 2021 LA / DF and ITW
+
+To train RawNet on ASVspoof 2021 LA, ASVspoof 2021 DF, or ITW, use `main2.py`:
+
+```bash
+python main2.py [other arguments]
 ```
 
-## Contact
-For any query regarding this repository, please contact:
-- Hemlata Tak: tak[at]eurecom[dot]fr
-## Citation
-If you use this code in your research please use the following citation:
-```bibtex
-@INPROCEEDINGS{9414234,
-  author={Tak, Hemlata and Patino, Jose and Todisco, Massimiliano and Nautsch, Andreas and Evans, Nicholas and Larcher, Anthony},
-  booktitle={IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 
-  title={End-to-End anti-spoofing with RawNet2}, 
-  year={2021},
-  pages={6369-6373}
-}
+No evaluation-specific flags are required during training.
 
+---
+
+## Evaluation / Testing
+
+For **evaluation or testing**, additional flags must be enabled.
+
+### Required Evaluation Flags
+
+When running evaluation, **all datasets** must include the following arguments:
+
+* `--is_eval`
+* `--eval`
+* `--model_path`
+
+These flags indicate evaluation mode and specify the trained model checkpoint.
+
+---
+
+### Example: Evaluation Command
+
+```bash
+python main2.py \
+  --is_eval \
+  --eval \
+  --model_path path/to/checkpoint.pth \
+  [other arguments]
 ```
+
+> Note: The same evaluation flags apply when using `main.py` for ASVspoof 2019 LA evaluation.
+
+---
+
+## Uncertainty Quantification (UQ) and Data Augmentation (DA)
+
+Uncertainty Quantification (UQ) and Data Augmentation (DA) strategies are **controlled inside the codebase**.
+
+* UQ-related behavior is enabled or disabled by modifying the corresponding UQ flags or modules in the code
+* DA strategies (e.g., RawBoost variants) are configured through code-level switches or configuration arguments
+
+Please refer to the source code for the exact implementation details and available options.
+
+---
+
+## Notes
+
+* Training **does not require** evaluation flags.
+* Evaluation **must include** `--is_eval`, `--eval`, and `--model_path`.
+* Always ensure dataset paths and protocol files are correctly configured before running experiments.
+
+This design follows the official ASVspoof RawNet2 baseline structure for reproducibility and consistency.
